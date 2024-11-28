@@ -8,7 +8,7 @@ app = Flask(__name__)
 def index():
     # Call the function and store the returned data in a variable
     my_questions = Questions()
-    data = my_questions.connect_to_database()
+    data = my_questions.fetch_data()
 
     # Return the HTML template for the index page
     return render_template('index.html', data=data)
