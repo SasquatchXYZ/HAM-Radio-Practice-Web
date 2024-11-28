@@ -9,6 +9,6 @@ class DatabaseConnection:
         self.connection = sqlite3.connect(self.db_path)
         return self.connection.cursor()
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.commit()
         self.connection.close()
