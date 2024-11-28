@@ -11,7 +11,7 @@ def index():
     # Call the fucntion and store the returned data in a variable
     with DatabaseConnection(db_path) as cursor:
         questions = Questions(cursor)
-        data = questions.fetch_data()
+        data = questions.get_question_set()
     # Return the HTML template for the index page
     return render_template('index.html', data=data)
 
