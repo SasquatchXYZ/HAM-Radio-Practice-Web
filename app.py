@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from app.models.database_connection import DatabaseConnection
 from app.models.questions import Questions
+from app.models.session import Session
 
 app = Flask(__name__)
 
