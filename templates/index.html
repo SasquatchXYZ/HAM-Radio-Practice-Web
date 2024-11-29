@@ -2,15 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Questions</title>
+    <title>Index Page</title>
 </head>
 <body>
 <h1>Ham Radio Practice Test</h1>
+<!-- Main Content -->
+{% block content %}{% endblock %}
+
 {% if session_id %}
 <h3>Session: {{session_id}}</h3>
-{% endif %}
 <button onclick="deleteCookieAndRefresh()">End This Session</button>
+{% endif %}
 {% if data %}
 <ul>
     {% for item in data %}
@@ -22,6 +24,7 @@
 </html>
 <script>
     function deleteCookieAndRefresh() {
+        // Client-side JavaScript to delete the cookie and refresh
         document.cookie = "session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         window.location.reload();
     }
