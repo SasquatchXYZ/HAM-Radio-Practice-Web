@@ -10,9 +10,7 @@
 {% if session_id %}
 <h3>Session: {{session_id}}</h3>
 {% endif %}
-<form action="/" method="POST">
-    <input type="submit" value="Start Question Session">
-</form>
+<button onclick="deleteCookieAndRefresh()">End This Session</button>
 {% if data %}
 <ul>
     {% for item in data %}
@@ -22,3 +20,9 @@
 {% endif %}
 </body>
 </html>
+<script>
+    function deleteCookieAndRefresh() {
+        document.cookie = "session_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.reload();
+    }
+</script>
