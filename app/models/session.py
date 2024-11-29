@@ -1,10 +1,11 @@
+from .database_connection import DatabaseConnection
 from .questions import Questions
 
 
 class Session:
-    def __init__(self, cursor):
+    def __init__(self, cursor: DatabaseConnection) -> None:
         self.cursor = cursor
-        self.session_id = self.create_session()
+        self.session_id = 0
         self.questions_correct = 0
         self.questions_incorrect = 0
 
@@ -35,5 +36,4 @@ class Session:
         questions = Questions(self.cursor)
         question_set = questions.get_question_set()
         for question in question_set:
-            self.cursor.execute("INSERT INTO question_sets VALUES (null, ?, ?)",
-                                (session_id, question[0]))
+            self.cursor.execute("INSERT INTO question_sets VALUES (null, ?, ?)", (session_id, question[0]))
