@@ -7,10 +7,15 @@
 </head>
 <body>
 <h1>Data</h1>
-<ol>
-    {% for row in data %}
-    <li>{{ row }}</li>
+<form action="/" method="POST">
+    <input type="submit" value="Start Question Session">
+</form>
+{% if data %}
+<ul>
+    {% for item in data %}
+    <li>{{ item }}</li>
     {% endfor %}
-</ol>
+</ul>
+{% endif %}
 </body>
 </html>
