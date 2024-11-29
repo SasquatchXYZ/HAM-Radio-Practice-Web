@@ -1,3 +1,4 @@
+from .database_connection import DatabaseConnection
 from .questions import Questions
 
 
@@ -16,15 +17,21 @@ class Session:
         else:
             session_id = result[0] + 1
         self.cursor.execute("INSERT INTO sessions VALUES (?, ?, ?)", (session_id, 0, 0))
-        question_set_id = self.create_question_set(session_id)
+        question_set_id = self.get_next_question_set_id()
+        self.create_question_set(session_id)
         return session_id
+
+    def get_next_question_set_id(self):
+        self.cursor.execute("SELECT question_set_id FROM question_sets ORDER BY question_set_id DESC LIMIT 1")
+        result = self.cursor.fetchone()
+        if result is None:
+            return 1
+        else:
+            return result[0] + 1
 
     def create_question_set(self, session_id):
         questions = Questions(self.cursor)
-        question_set_id = 1
-        question_set = questions.get_question_set(35)
+        question_set = questions.get_question_set()
         for question in question_set:
-            self.cursor.execute("INSERT INTO question_sets VALUES (?, ?, ?)",
-                                (question_set_id, session_id, question[0]))
-            question_set_id += 1
-        return question_set_id
+            self.cursor.execute("INSERT INTO question_sets VALUES (null, ?, ?)",
+                                (session_id, question[0]))
