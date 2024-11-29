@@ -24,7 +24,7 @@ def index():
             # We have a cookie value and existing id
             session.session_id = current_session
             questions = Questions(cursor)
-            data = questions.get_question_set()
+            data = questions.get_question_set(session.session_id)
             response = make_response(render_template('index.html', data=data, session_id=session.session_id))
             return response
 
