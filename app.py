@@ -11,6 +11,8 @@ def index():
     db_path = 'data/questions.db'
     # Call the fucntion and store the returned data in a variable
     with DatabaseConnection(db_path) as cursor:
+        session = Session(cursor)
+        print("Session ID:", session.session_id)
         questions = Questions(cursor)
         data = questions.get_question_set()
     # Return the HTML template for the index page
