@@ -1,9 +1,8 @@
-from .database_connection import DatabaseConnection
 from .questions import Questions
 
 
 class Session:
-    def __init__(self, cursor: DatabaseConnection) -> None:
+    def __init__(self, cursor) -> None:
         self.cursor = cursor
         self.session_id = 0
         self.questions_correct = 0
