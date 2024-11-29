@@ -6,7 +6,10 @@
     <title>Questions</title>
 </head>
 <body>
-<h1>Data</h1>
+<h1>Ham Radio Practice Test</h1>
+{% if session_id %}
+<h3>Session: {{session_id}}</h3>
+{% endif %}
 <form action="/" method="POST">
     <input type="submit" value="Start Question Session">
 </form>
