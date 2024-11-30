@@ -2,6 +2,8 @@
 import sqlite3
 import pytest
 
+from app.models.questions import Questions
+
 
 # import pytest
 # from models.questions import Question  # Adjust the import according to the actual module contents
@@ -25,7 +27,7 @@ class TestQuestion:
         # Fetch the result of the query
         count = cursor.fetchone()[0]
         # Assert that the count matches the expected number of records
-        expected_count = 411 # Replace with the expected number of records
+        expected_count = 411  # Replace with the expected number of records
         assert count == expected_count, f"Expected {expected_count} records, but found {count}"
 
     def test_get_questions(self, db_connection: sqlite3.Connection):
@@ -33,6 +35,28 @@ class TestQuestion:
         result = db_connection.execute("SELECT * FROM questions WHERE id = 'T1A01'")
         question = result.fetchone()
         assert question is not None
+
+    def test_get_question_set(self, db_connection: sqlite3.Connection):
+        questions = Questions(db_connection.cursor())
+
+        # Call the get_question_set method with no session_id
+        question_set = questions.get_question_set()
+
+        # Verify the results
+        assert question_set is not None
+        assert len(question_set) > 0  # Assuming it returns a list of questions
+
+    def test_get_all_questions_empty_list(self, db_connection: sqlite3.Connection):
+        # Arrange
+        # Clear the questions table
+        db_connection.execute("DELETE FROM questions")
+        db_connection.commit()
+
+        # Act
+        result = Questions(db_connection.cursor()).get_all_questions()
+
+        # Assert
+        assert result == []
 
     #     def setup_method(self):
     #         """Setup any state specific to the execution of the given module."""
