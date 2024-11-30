@@ -1,5 +1,6 @@
 # Generated from inside the test file
 import sqlite3
+import pytest
 
 
 # import pytest
@@ -8,6 +9,30 @@ import sqlite3
 
 # Example Test Class
 class TestQuestion:
+
+    @pytest.fixture(scope="module")
+    def db_connection(self):
+        # Setup: create the in-memory database connection
+        memory_connection = self.create_in_memory_db_from_existing('../data/questions.db')
+        yield memory_connection  # This is where the testing happens
+
+        # Teardown: Close the database connection
+        memory_connection.close()
+
+    def test_connection(self, db_connection: sqlite3.Connection):
+        # Execute a SQL query to count the number of records in the questions table
+        cursor = db_connection.execute("SELECT COUNT(*) FROM questions")
+        # Fetch the result of the query
+        count = cursor.fetchone()[0]
+        # Assert that the count matches the expected number of records
+        expected_count = 411 # Replace with the expected number of records
+        assert count == expected_count, f"Expected {expected_count} records, but found {count}"
+
+    def test_get_questions(self, db_connection: sqlite3.Connection):
+        # Example test using the db_connection fixture
+        result = db_connection.execute("SELECT * FROM questions WHERE id = 'T1A01'")
+        question = result.fetchone()
+        assert question is not None
 
     #     def setup_method(self):
     #         """Setup any state specific to the execution of the given module."""
@@ -39,10 +64,6 @@ class TestQuestion:
     #         question = Question(**input_data)
     #         result = question.some_method()  # Replace with an actual method
     #         assert result == expected
-
-    def test_connection(self):
-        in_memory_db = self.create_in_memory_db_from_existing('../data/questions.db')
-        in_memory_db.execute("SELECT * FROM questions")
 
     def create_in_memory_db_from_existing(self, existing_db_path: str):
         # Connect to the existing database
