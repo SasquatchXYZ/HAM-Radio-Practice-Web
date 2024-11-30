@@ -62,9 +62,10 @@ def test_get_answered_questions(setup_questions):
 
 def test_get_next_question_before_35(setup_questions):
     questions, mock_cursor = setup_questions
-    mock_cursor.fetchall.side_effect = [[(1,), (2,), (3,)], [(5,)]]
+    mock_cursor.fetchall.side_effect = [[(1,), (2,), (3,), (4,), (5,)]]
+    mock_cursor.fetchone.return_value = (1, 2)
     result = questions.get_next_question(1)
-    assert result == '5'
+    assert result == '4'
     mock_cursor.execute.assert_any_call("SELECT question_id FROM question_sets WHERE session_id = ?", (1,))
 
 
